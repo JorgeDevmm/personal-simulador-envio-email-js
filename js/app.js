@@ -5,5 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputAsunto = document.querySelector('#asunto');
   const inputMensaje = document.querySelector('#mensaje');
 
-  
+  // Asignar eventos
+
+  // evento al abandonar campo
+  inputEmail.addEventListener('blur', (e) => {
+    console.log(e.target.value);
+  });
 });
