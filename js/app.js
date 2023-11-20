@@ -14,9 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // función validar
   function validar(e) {
-    console.log(e.target.value);
+    e.target.value.trim() === ''
+      ? console.log('vacio')
+      : console.log(e.target.value);
   }
-
-
-  
 });
