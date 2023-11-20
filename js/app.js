@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputAsunto = document.querySelector('#asunto');
   const inputMensaje = document.querySelector('#mensaje');
 
+  const formulario = document.querySelector('#formulario');
+
   // Asignar eventos
 
   // evento al abandonar campo
@@ -22,7 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function mostrarAlerta() {
     // Generar alerta en HTML
     const error = document.createElement('P');
-    error.textContent = 'Hubo un Error';
+    error.textContent = 'Hubo un Error...';
+    error.classList.add('text-white', 'text-center', 'bg-red-600', 'p-2');
+
+    // Inyectar el error al formulario
+    formulario.appendChild(error);
 
     console.log(error);
   }
