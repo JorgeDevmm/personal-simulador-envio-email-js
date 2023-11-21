@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Seleccionar los elementos de la interfaz
   const inputEmail = document.querySelector('#email');
+  const inputCC = document.querySelector('#cc');
   const inputAsunto = document.querySelector('#asunto');
   const inputMensaje = document.querySelector('#mensaje');
 
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // evento al abandonar campo
   inputEmail.addEventListener('input', validar);
+  inputCC.addEventListener('input', validar);
   inputAsunto.addEventListener('input', validar);
   inputMensaje.addEventListener('input', validar);
 
@@ -34,8 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     resetFormulario();
   });
 
+  // FUNCTION enviarEmail
   function enviarEmail(e) {
     e.preventDefault();
+    const referencia = e.target.parentElement;
 
     // agregar y remueve las clases flex y hidden respectivamente
     spinner.classList.add('flex');
@@ -48,21 +52,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Limpiar formulario
       resetFormulario();
+
+      limpiarAlertaFinal(referencia);
+      // Crear una alerta
+      const alertaExito = document.createElement('P');
+
+      alertaExito.classList.add(
+        'bg-green-500',
+        'text-white',
+        'p-2',
+        'text-center',
+        'rounded-lg',
+        'mt-10',
+        'font-bold',
+        'text-sm',
+        'uppercase'
+      );
+
+      alertaExito.textContent = 'Mensaje enviado Correctamente';
+
+      formulario.appendChild(alertaExito);
+
+      // remover mensaje
+      setTimeout(() => {
+        alertaExito.remove();
+      }, 3000);
     }, 3000);
   }
 
-  // función validar
+  // FUNCTION función validar
   function validar(e) {
     const referencia = e.target.parentElement;
 
-    if (e.target.value.trim() === '') {
+    console.log(`${e.target.id} => ${e.target.value}`);
+
+    if (e.target.value.trim() === '' && e.target.id !== 'cc') {
       mostrarAlerta(`El Campo ${e.target.id}  es obligatorio`, referencia);
       email[e.target.id] = ''; //el objeto se asigna vacio para validar
       comprobarEmail();
       return;
-    }
+    } 
 
-    if (!validarEmail(e.target.value) && e.target.id === 'email') {
+    if (
+      (!validarEmail(e.target.value.trim()) && e.target.id === 'email') ||
+      (!validarEmail(e.target.value.trim()) && e.target.id === 'cc')
+    ) {
       mostrarAlerta(`El Campo ${e.target.id} no es válido`, referencia);
       email[e.target.id] = '';
       comprobarEmail();
@@ -81,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     comprobarEmail();
   }
 
+  // FUNCTION mostrarAlerta
   function mostrarAlerta(mensaje, referencia) {
     // Comprueba si ya existe una alerta, en la referencia
     limpiarAlerta(referencia);
@@ -94,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     referencia.appendChild(error);
   }
 
-  // Limpiar alerta
+  //FUNCTION LimpiarAlerta
   function limpiarAlerta(referencia) {
     // Comprueba si ya existe una alerta, en la referencia
     const alerta = referencia.querySelector('.bg-red-600');
@@ -103,6 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function limpiarAlertaFinal(referencia) {
+    // Comprueba si ya existe una alerta, en la referencia
+    const alerta = referencia.querySelector('.bg-green-500');
+    if (alerta) {
+      alerta.remove();
+    }
+  }
+
+  //FUNCTION validarEmail
   function validarEmail(email) {
     const regex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
     // validar email con expresión regular
@@ -110,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return resultado;
   }
 
+  //FUNCTION comprobarEmail
   function comprobarEmail() {
     // crea un nuevo arreglo con valores del objeto, y poder manipularlo con includes para retornar true en caso este vacio un campo
     if (Object.values(email).includes('')) {
@@ -122,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSubmit.disabled = false;
   }
 
+  //FUNCTION resetFormulario
   function resetFormulario() {
     // Reiniciar los valores del objeto
     for (let clave in email) {
