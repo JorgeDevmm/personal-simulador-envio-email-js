@@ -30,25 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
   btnReset.addEventListener('click', function (e) {
     e.preventDefault();
 
-    // Reiniciar los valores del objeto
-    for (let clave in email) {
-      email[clave] = '';
-    }
-
-    formulario.reset(); //reseteo de campos visual del formulario
-    comprobarEmail();
+    // Limpiar formulario
+    resetFormulario();
   });
 
   function enviarEmail(e) {
     e.preventDefault();
 
-    if (spinner.classList.contains("hidden")) {
-      spinner.classList.add('flex');
-      spinner.classList.remove('hidden');
-      formulario.reset(); //reseteo de campos visual del formulario
-      comprobarEmail();
-      console.log('enviando..');
-    }
+    // agregar y remueve las clases flex y hidden respectivamente
+    spinner.classList.add('flex');
+    spinner.classList.remove('hidden');
+
+    // pasado 3 segundo se removera el splineer
+    setTimeout(() => {
+      spinner.classList.remove('flex');
+      spinner.classList.add('hidden');
+
+      // Limpiar formulario
+      resetFormulario();
+    }, 3000);
   }
 
   // función validar
@@ -120,5 +120,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     btnSubmit.classList.remove('opacity-50');
     btnSubmit.disabled = false;
+  }
+
+  function resetFormulario() {
+    // Reiniciar los valores del objeto
+    for (let clave in email) {
+      email[clave] = '';
+    }
+
+    formulario.reset(); //reseteo de campos visual del formulario
+    comprobarEmail();
   }
 });
