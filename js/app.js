@@ -13,26 +13,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formulario = document.querySelector('#formulario');
 
+  const btnSubmit = document.querySelector("#formulario button[type='submit']");
+
   // Asignar eventos
 
   // evento al abandonar campo
-  inputEmail.addEventListener('blur', validar);
-  inputAsunto.addEventListener('blur', validar);
-  inputMensaje.addEventListener('blur', validar);
+  inputEmail.addEventListener('input', validar);
+  inputAsunto.addEventListener('input', validar);
+  inputMensaje.addEventListener('input', validar);
 
   // función validar
   function validar(e) {
     const referencia = e.target.parentElement;
 
-    console.log(e.target.id);
-
     if (e.target.value.trim() === '') {
       mostrarAlerta(`El Campo ${e.target.id}  es obligatorio`, referencia);
+      email[e.target.id] = ''; //el objeto se asigna vacio para validar
+      comprobarEmail();
       return;
     }
 
     if (!validarEmail(e.target.value) && e.target.id === 'email') {
       mostrarAlerta(`El Campo ${e.target.id} no es válido`, referencia);
+      email[e.target.id] = '';
+      comprobarEmail();
       return;
     }
 
@@ -78,8 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function comprobarEmail() {
+    // crea un nuevo arreglo con valores del objeto, y poder manipularlo con includes para retornar true en caso este vacio un campo
+    if (Object.values(email).includes('')) {
+      btnSubmit.classList.add('opacity-50');
+      btnSubmit.disabled = true;
 
-    // crea un nuevo arreglo con valores del objeto, y poder manipularlo con includes para retornar true en caso tenga data
-    console.log(Object.values(email).includes(""));
+      return;
+    }
+    btnSubmit.classList.remove('opacity-50');
+    btnSubmit.disabled = false;
   }
 });
