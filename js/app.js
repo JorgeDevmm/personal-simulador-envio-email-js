@@ -1,5 +1,11 @@
 // validamos que se descargo todo el codigo html
 document.addEventListener('DOMContentLoaded', () => {
+  const email = {
+    email: '',
+    asunto: '',
+    mensaje: '',
+  };
+
   // Seleccionar los elementos de la interfaz
   const inputEmail = document.querySelector('#email');
   const inputAsunto = document.querySelector('#asunto');
@@ -31,6 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     limpiarAlerta(referencia);
+
+    // Asignar los valores al obejto literal
+
+    // si en el objeto literal exista esta propiedad
+    if (email.hasOwnProperty(e.target.id)) {
+      email[e.target.id] = e.target.value.trim().toLowerCase();
+    }
+
+    comprobarEmail();
   }
 
   function mostrarAlerta(mensaje, referencia) {
@@ -60,5 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // validar email con expresión regular
     const resultado = regex.test(email);
     return resultado;
+  }
+
+  function comprobarEmail() {
+
+    // crea un nuevo arreglo con valores del objeto, y poder manipularlo con includes para retornar true en caso tenga data
+    console.log(Object.values(email).includes(""));
   }
 });
