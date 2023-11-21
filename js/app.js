@@ -15,12 +15,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const btnSubmit = document.querySelector("#formulario button[type='submit']");
 
+  const btnReset = document.querySelector("#formulario button[type='reset']");
+
   // Asignar eventos
 
   // evento al abandonar campo
   inputEmail.addEventListener('input', validar);
   inputAsunto.addEventListener('input', validar);
   inputMensaje.addEventListener('input', validar);
+  btnReset.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // Reiniciar los valores del objeto
+    for (let clave in email) {
+      email[clave] = '';
+    }
+
+    formulario.reset();//reseteo de campos visual del formulario
+    comprobarEmail();
+  });
 
   // función validar
   function validar(e) {
